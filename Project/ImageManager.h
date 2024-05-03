@@ -39,9 +39,9 @@ public:
     BOOL deleteAll();
 
     //렌더함수 추가
-    void render(string strKey, HDC hdc);
-    void render(string strKey, HDC hdc, int destX, int destY);
-    void render(string strKey, HDC hdc, int destX, int destY, int sourX, int sourY, int sourWidth, int sourHeight);
+    void Render(string strKey, HDC hdc);
+    void Render(string strKey, HDC hdc, int destX, int destY);
+    void Render(string strKey, HDC hdc, int destX, int destY, int sourX, int sourY, int sourWidth, int sourHeight);
 
     //알파블렌드
     void alphaRender(string strKey, HDC hdc, BYTE alpha);

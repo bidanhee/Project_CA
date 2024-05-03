@@ -1,5 +1,7 @@
 #pragma once
 #include "winFroc.h"
+#include "gameObjectManager.h"
+#include "Player.h"
 
 class cGame : 
     public WinFroc
