@@ -217,19 +217,19 @@ BOOL ImageManager::deleteAll()
     return true;
 }
 
-void ImageManager::render(string strKey, HDC hdc)
+void ImageManager::Render(string strKey, HDC hdc)
 {
     Image* img = findImage(strKey);
     if (img) img->Render(hdc);
 }
 
-void ImageManager::render(string strKey, HDC hdc, int destX, int destY)
+void ImageManager::Render(string strKey, HDC hdc, int destX, int destY)
 {
     Image* img = findImage(strKey);
     if (img) img->Render(hdc, destX, destY);
 }
 
-void ImageManager::render(string strKey, HDC hdc, int destX, int destY, int sourX, int sourY, int sourWidth, int sourHeight)
+void ImageManager::Render(string strKey, HDC hdc, int destX, int destY, int sourX, int sourY, int sourWidth, int sourHeight)
 {
     Image* img = findImage(strKey);
     if (img) img->Render(hdc, destX, destY, sourX, sourY, sourWidth, sourHeight);

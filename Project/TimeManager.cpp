@@ -29,7 +29,7 @@ void TimeManager::Update(float lock)
         _timer->tick(lock);
 }
 
-void TimeManager::render(HDC hdc)
+void TimeManager::Render(HDC hdc)
 {
     string strFrame;
 
@@ -41,7 +41,7 @@ void TimeManager::render(HDC hdc)
         if (_timer != NULL)
         {
 
-            Text(12, 5, 10, "FramePerSec: " + to_string(_timer->getFrameRate()))(hdc);
+            Text(12, 30, 60, "FPS: " + to_string(_timer->getFrameRate()))(hdc);
             Text(12, 670, 690, "WorldTime: " + to_string(_timer->getWorldTime()))(hdc);
             Text(12, 670, 710, "ElapsedTime: " + to_string(_timer->getElapsedTime()))(hdc);
 

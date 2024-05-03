@@ -70,6 +70,29 @@ enum class GameObjectTag
     Item
 };
 
+
+enum class PlayerTypeTag
+{
+    Player1,
+    Player2,
+    SoloPlayer
+};
+
+enum class PlayerStateTag
+{
+    Not,
+    Ready,
+    Wait,
+    Up,
+    Down,
+    Left,
+    Right,
+    Trap,
+    Die,
+    Live,
+    Jump
+};
+
 struct Text
 {
     Text(int size, int x, int y, string str, COLORREF textColor = RGB(0, 0, 0), string font = "¥Ÿ¿Ω_Regular")
@@ -99,4 +122,20 @@ struct Text
     string _str;
     string _font;
     COLORREF _textColor;
+};
+
+struct POINT_FLOAT
+{
+    POINT_FLOAT()
+        : x(0.f)
+        , y(0.f)
+    {
+    }
+    POINT_FLOAT(float px, float py)
+    {
+        x = px;
+        y = py;
+    }
+    float x;
+    float y;
 };

@@ -29,7 +29,7 @@ public:
 
     virtual void Init() { }
     virtual void Update() { }
-    virtual void render(HDC hdc) { }
+    virtual void Render(HDC hdc) { }
     virtual void Release() { }
 
     virtual void animation(int maxFrame) final;
