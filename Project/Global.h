@@ -38,9 +38,16 @@ using namespace std;
 #define SAFE_DELETE_ARRAY(p)    {if(p)  {delete[] (p);   (p)=NULL;}}
 #define SAFE_RELEASE(p)         {if(p)  {(p)->Release(); (p)=NULL;}}
 
-static POINT ptMouse = { 0, 0 };
+// 화면 사이즈
+#define BOARD_STARTX   26
+#define BOARD_STARTY   53
+#define BOARD_RECTSIZE 52
+#define BOARD_ROW      13
+#define BOARD_COL      15
+#define BOARD_WIDTH    (BOARD_RECTSIZE * BOARD_COL)  //780
+#define BOARD_HEIGHT   (BOARD_RECTSIZE * BOARD_ROW ) //676
 
-static HINSTANCE testInstance;
+static POINT ptMouse = { 0, 0 };
 
 template < typename T1, typename T2, typename T3, typename T4>
 inline RECT makeRect(T1 x, T2 y, T3 width, T4 height)
@@ -93,6 +100,29 @@ enum class PlayerStateTag
     Jump
 };
 
+enum class BombStateTag
+{
+    Not,
+    Set,
+    MakeWave,
+    Pop
+};
+
+
+enum class WaveStateTag
+{
+    Up,
+    Down,
+    Left,
+    Right
+};
+
+enum class WaveControllerStateTag
+{
+    Making,
+    Complete
+};
+
 struct Text
 {
     Text(int size, int x, int y, string str, COLORREF textColor = RGB(0, 0, 0), string font = "다음_Regular")
@@ -139,3 +169,25 @@ struct POINT_FLOAT
     float x;
     float y;
 };
+
+struct MapSpace
+{
+    int row;
+    int col;
+};
+
+inline MapSpace leftTopToMapSpace(float startX, float startY)
+{
+    MapSpace m;
+    m.col = (static_cast<int>(startX) - BOARD_STARTX) / BOARD_RECTSIZE;
+    m.row = (static_cast<int>(startY) - BOARD_STARTY) / BOARD_RECTSIZE;
+    return m;
+}
+
+inline POINT_FLOAT mapSpaceToLeftTop(int row, int col)
+{
+    POINT_FLOAT pt;
+    pt.x = static_cast<float>(BOARD_STARTX + col * BOARD_RECTSIZE);
+    pt.y = static_cast<float>(BOARD_STARTY + row * BOARD_RECTSIZE);
+    return pt;
+}

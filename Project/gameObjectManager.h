@@ -32,4 +32,8 @@ public:
 
     void checkCollision();
 
+    string showTagForDebug(GameObjectTag tag);
+
+    void debug(HDC hdc);
+
 };

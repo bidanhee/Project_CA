@@ -39,6 +39,8 @@ private:
 	const float _TRAP_MOVE_COOLTIME;
 	const float _DIE_COOLTIME;
 
+	const float _BOMB_CREATE_COOLTIME;
+	float _bombCreateTime;
 public:
 	Player(PlayerTypeTag playerType, float startX, float startY);
 	~Player();
@@ -56,6 +58,10 @@ public:
 	void changeUsedBombs();
 
 	//get set
+	POINT_FLOAT getCenter() const
+	{
+		return _center;
+	}
 	int getWidth() const
 	{
 		return _WIDTH;

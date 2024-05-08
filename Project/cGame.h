@@ -2,7 +2,7 @@
 #include "winFroc.h"
 #include "gameObjectManager.h"
 #include "Player.h"
-
+#include "Bomb.h"
 class cGame : 
     public WinFroc
 {

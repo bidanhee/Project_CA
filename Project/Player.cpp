@@ -3,14 +3,9 @@
 #include "TimeManager.h"
 #include "ImageManager.h"
 #include "KeyManager.h"
+#include "gameObjectManager.h"
 
-#define BOARD_STARTX   26
-#define BOARD_STARTY   53
-#define BOARD_RECTSIZE 52
-#define BOARD_ROW      13
-#define BOARD_COL      15
-#define BOARD_WIDTH    (BOARD_RECTSIZE * BOARD_COL)  //780
-#define BOARD_HEIGHT   (BOARD_RECTSIZE * BOARD_ROW ) //676
+#include "Bomb.h"
 
 Player::Player(PlayerTypeTag playerType, float startX, float startY)
 	: GameObject(GameObjectTag::Player)
@@ -19,8 +14,8 @@ Player::Player(PlayerTypeTag playerType, float startX, float startY)
 	, _HEIGHT(BOARD_RECTSIZE)
 	, _speed(5.f)
 	, _usedBombs(0)
-	, _usableBombs(1)       
-	, _power(1)               
+	, _usableBombs(10)       
+	, _power(3)               
 	, _previousState(PlayerStateTag::Not)
 	, _currentState(PlayerStateTag::Ready)
 	, _startTime(static_cast<int>(TimeManager::getSingleton()->getWorldTime()))
@@ -38,6 +33,7 @@ Player::Player(PlayerTypeTag playerType, float startX, float startY)
 	, _DIE_COOLTIME(0.2f)
 	, _count(0)           
 	, _check(false)
+	, _BOMB_CREATE_COOLTIME(0.1f)
 {
 	_start.x = startX;
 	_start.y = startY;
@@ -201,6 +197,20 @@ void Player::Update()
 					(_playerType == PlayerTypeTag::Player2 && KeyManager::getSingleton()->isStayKeyDown(VK_RSHIFT)) ||
 					(_playerType == PlayerTypeTag::Player1 && KeyManager::getSingleton()->isStayKeyDown(VK_LSHIFT)))
 				{
+					if (_usedBombs < _usableBombs)
+					{
+						float currentTime;
+						currentTime = TimeManager::getSingleton()->getWorldTime();
+						if (currentTime - _bombCreateTime > _BOMB_CREATE_COOLTIME)
+						{
+							Bomb* bomb = new Bomb(this, _center, _power);
+							GameObjectManager::getSingleton()->registerObj(bomb);
+							_usedBombs++;
+
+							_bombCreateTime = TimeManager::getSingleton()->getWorldTime();
+						}
+					}
+
 					if (!_check)
 					{
 						_check = true;

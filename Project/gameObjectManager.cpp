@@ -39,9 +39,13 @@ void GameObjectManager::removeObjAll()
 
 void GameObjectManager::updateObj()
 {
-	for (auto g : _gameObj)
+	for (size_t i = 0; i < _gameObj.size(); ++i)
 	{
-		g->Update();
+		GameObject* g = _gameObj[i];
+		if (g != nullptr)
+		{
+			g->Update();
+		}
 	}
 
 	/*if (GAMESTATEMANAGER->getGameStart())
@@ -75,4 +79,37 @@ void GameObjectManager::checkCollision()
 {
 	map<GameObjectTag, vector<GameObject*>> m;
 	RECT rcTemp;
+}
+
+
+string GameObjectManager::showTagForDebug(GameObjectTag tag)
+{
+	switch (tag)
+	{
+	case GameObjectTag::Not:
+		return "Not";
+	case GameObjectTag::Player:
+		return "Player";
+	case GameObjectTag::Bomb:
+		return "Bomb";
+	case GameObjectTag::DesignElement:
+		return "Design Element";
+	case GameObjectTag::Wave:
+		return "Wave";
+	case GameObjectTag::WaveStartingPoint:
+		return "WaveStartingPoint";
+	case GameObjectTag::Item:
+		return "Item";
+	default:
+		return "?";
+	}
+}
+
+void GameObjectManager::debug(HDC hdc)
+{
+	Text(15, 30, 80, "GameObj size: " + to_string(getGameObjSize()))(hdc);
+	for (size_t i = 0; i < _gameObj.size(); ++i)
+	{
+		Text(15, 30, 100 + (15 * i), "ID: " + to_string(_gameObj[i]->getId()) + ", TAG: " + showTagForDebug(_gameObj[i]->getTag()), BLACK)(hdc);
+	}
 }

@@ -13,7 +13,15 @@ HRESULT cGame::Init()
 {
     WinFroc::Init(true);
     Player* player1 = new Player(PlayerTypeTag::SoloPlayer, 100, 100);
+    /*Player* player2 = new Player(PlayerTypeTag::SoloPlayer, 400, 400);
+    Bomb* testBomb = new Bomb(player1, player1->getCenter(), 1);
+    Bomb* testBomb2 = new Bomb(player2, player2->getCenter(), 1);
+    Bomb* testBomb3 = new Bomb(player2, player2->getCenter(), 1);*/
     GameObjectManager::getSingleton()->registerObj(player1);
+    /*GameObjectManager::getSingleton()->registerObj(player2);
+    GameObjectManager::getSingleton()->registerObj(testBomb);
+    GameObjectManager::getSingleton()->registerObj(testBomb2);
+    GameObjectManager::getSingleton()->registerObj(testBomb3);*/
     return S_OK;
 }
 
@@ -39,6 +47,7 @@ void cGame::Render()
     //ImageManager::getSingleton()->Render("OVER", getMemDC(), 200, 200);
     GameObjectManager::getSingleton()->renderObj(getMemDC());
     TimeManager::getSingleton()->Render(getMemDC());
+    GameObjectManager::getSingleton()->debug(getMemDC());
 
     this->getBackBuffer()->Render(getHDC());
 }
