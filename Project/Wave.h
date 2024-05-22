@@ -23,4 +23,7 @@ public:
     virtual void Render(HDC hdc) override;
     virtual void Release() override;
 
+    float getStartX() { return _start.x; }
+    float getStartY() { return _start.y; }
+    int getSize() { return _SIZE; }
 };

@@ -6,16 +6,17 @@
 #include "gameObjectManager.h"
 
 #include "Bomb.h"
+#include "Item.h"
 
 Player::Player(PlayerTypeTag playerType, float startX, float startY)
 	: GameObject(GameObjectTag::Player)
 	, _playerType(playerType)
 	, _WIDTH(BOARD_RECTSIZE)
 	, _HEIGHT(BOARD_RECTSIZE)
-	, _speed(5.f)
+	, _speed(1.f)
 	, _usedBombs(0)
-	, _usableBombs(10)       
-	, _power(3)               
+	, _usableBombs(1)       
+	, _power(1)               
 	, _previousState(PlayerStateTag::Not)
 	, _currentState(PlayerStateTag::Ready)
 	, _startTime(static_cast<int>(TimeManager::getSingleton()->getWorldTime()))
@@ -66,6 +67,8 @@ void Player::Update()
 	if (false) {}
 	else
 	{
+		_previousStart = _start;
+
 		if (_currentState == PlayerStateTag::Ready)
 		{
 			setAnimationInfo("playerBazziWait", _WAIT_COOLTIME);
@@ -363,7 +366,7 @@ void Player::Release()
 
 void Player::onCollisionEnter(GameObject* other, RECT area)
 {
-	/*switch (other->getTag())
+	switch (other->getTag())
 	{
 	case GameObjectTag::Wave: 
 	case GameObjectTag::WaveStartingPoint:
@@ -374,33 +377,31 @@ void Player::onCollisionEnter(GameObject* other, RECT area)
 	break;
 	case GameObjectTag::Item:
 	{
-		SOUNDMANAGER->play(static_cast<int>(SoundTypeTag::EatItem), SoundTypeTag::EatItem);
+		//SOUNDMANAGER->play(static_cast<int>(SoundTypeTag::EatItem), SoundTypeTag::EatItem);
 		Item* item = dynamic_cast<Item*>(other);
 
 		switch (item->getItemType())
 		{
 		case ItemTypeTag::Ballon:
-			if (_usableBombs < 6)
 				_usableBombs++;
 			break;
 		case ItemTypeTag::Potion:
-			if (_power < 7)
 				_power++;
 			break;
-		case ItemTypeTag::PotionMakePowerMax:
+		case ItemTypeTag::PotionMax:
 			if (_power < 7)
 				_power = 7;
 			break;
 		case ItemTypeTag::Skate:
-			if (_speed < 5.f)
 				_speed += 1.f;
 			break;
 		}
-
 	}
 	break;
+	case GameObjectTag::Block:
+		_start = _previousStart;
+		break;
 	}
-	*/
 }
 
 void Player::setCenter()

@@ -3,6 +3,10 @@
 #include "gameObjectManager.h"
 #include "Player.h"
 #include "Bomb.h"
+#include "Item.h"
+#include "MapManager.h"
+#include "Block.h"
+
 class cGame : 
     public WinFroc
 {

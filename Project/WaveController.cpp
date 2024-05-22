@@ -1,9 +1,9 @@
 #include "WaveController.h"
 #include "TimeManager.h"
 #include "gameObjectManager.h"
-#include "Wave.h"
+#include "Block.h"
 
-WaveControllor::WaveControllor(MapSpace mapSpace, int power)
+WaveController::WaveController(MapSpace mapSpace, int power)
 	: GameObject(GameObjectTag::WaveStartingPoint)
 	, _state(WaveControllerStateTag::Making)
 	, _mapSpace(mapSpace)
@@ -14,17 +14,19 @@ WaveControllor::WaveControllor(MapSpace mapSpace, int power)
 {
 	_coolDown = _MAKE_COOLTIME;
 	_start = mapSpaceToLeftTop(mapSpace.row, mapSpace.col);
+	for (int i = 0; i < 4; i++)
+		_isClogged[i] = false;
 }
 
-WaveControllor::~WaveControllor()
+WaveController::~WaveController()
 {
 }
 
-void WaveControllor::Init()
+void WaveController::Init()
 {
 }
 
-void WaveControllor::Update()
+void WaveController::Update()
 {
 	if (_state == WaveControllerStateTag::Making)
 	{
@@ -34,25 +36,29 @@ void WaveControllor::Update()
 			_coolDown = _MAKE_COOLTIME;
 			if (_currentWaveIndex <= _POWER)
 			{
-
-				if (_mapSpace.row - _currentWaveIndex >= 0)
+				if (_mapSpace.row - _currentWaveIndex >= 0 && !_isClogged[UP])
 				{
 					Wave* upWave = new Wave(_mapSpace.row - _currentWaveIndex, _mapSpace.col, WaveStateTag::Up, _POWER);
+					_isClogged[UP] = checkBlockCollision(upWave);
+
 					GameObjectManager::getSingleton()->registerObj(upWave);
 				}
-				if (_mapSpace.row + _currentWaveIndex <= BOARD_ROW - 1)
+				if (_mapSpace.row + _currentWaveIndex <= BOARD_ROW - 1 && !_isClogged[DOWN])
 				{
 					Wave* downWave = new Wave(_mapSpace.row + _currentWaveIndex, _mapSpace.col, WaveStateTag::Down, _POWER);
+					_isClogged[DOWN] = checkBlockCollision(downWave);
 					GameObjectManager::getSingleton()->registerObj(downWave);
 				}
-				if (_mapSpace.col - _currentWaveIndex >= 0)
+				if (_mapSpace.col - _currentWaveIndex >= 0 && !_isClogged[LEFT])
 				{
 					Wave* leftWave = new Wave(_mapSpace.row, _mapSpace.col - _currentWaveIndex, WaveStateTag::Left, _POWER);
+					_isClogged[LEFT] = checkBlockCollision(leftWave);
 					GameObjectManager::getSingleton()->registerObj(leftWave);
 				}
-				if (_mapSpace.col + _currentWaveIndex <= BOARD_COL - 1)
+				if (_mapSpace.col + _currentWaveIndex <= BOARD_COL - 1 && !_isClogged[RIGHT])
 				{
 					Wave* rightWave = new Wave(_mapSpace.row, _mapSpace.col + _currentWaveIndex, WaveStateTag::Right, _POWER);
+					_isClogged[RIGHT] = checkBlockCollision(rightWave);
 					GameObjectManager::getSingleton()->registerObj(rightWave);
 				}
 
@@ -72,10 +78,39 @@ void WaveControllor::Update()
 
 }
 
-void WaveControllor::Render(HDC hdc)
+void WaveController::Render(HDC hdc)
 {
 }
 
-void WaveControllor::Release()
+void WaveController::Release()
 {
+}
+
+bool WaveController::checkBlockCollision(Wave* w)
+{
+	map<GameObjectTag, vector<GameObject*>> m;
+	RECT rcTemp;
+	vector<GameObject*> _gameObj = GameObjectManager::getSingleton()->getGameObject();
+	for (auto go : _gameObj)
+	{
+		m[go->getTag()].push_back(go);
+	}
+	for (auto block : m[GameObjectTag::Block])
+	{
+		Block* b = dynamic_cast<Block*>(block);
+		RECT waveRect = makeRect(w->getStartX(), w->getStartY(), w->getSize(), w->getSize());
+		RECT blockRect = makeRect(b->getStartX(), b->getStartY(), b->getSize(), b->getSize());
+		if (IntersectRect(&rcTemp, &waveRect, &blockRect))
+		{
+			if ((b->getState() != BlockStateTag::Pop))
+			{
+				b->setState(BlockStateTag::Pop);
+				//TODO: 블록마다 어쩌구 상호작용
+				//GameObjectManager::getSingleton()->removeObj(b->getId());
+				return true;
+			}
+		}
+	}
+
+	return false;
 }

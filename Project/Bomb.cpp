@@ -52,7 +52,7 @@ void Bomb::Update()
 	}
 	else if (_currentState == BombStateTag::MakeWave)
 	{
-		WaveControllor* wave = new WaveControllor(_mapSpace, _POWER);
+		WaveController* wave = new WaveController(_mapSpace, _POWER);
 		GameObjectManager::getSingleton()->registerObj(wave);
 
 		_previousState = _currentState;

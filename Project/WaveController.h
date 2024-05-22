@@ -1,7 +1,11 @@
 #pragma once
 #include "gameObject.h"
+#include "Wave.h"
 
-class WaveControllor : public GameObject
+enum {
+    LEFT, RIGHT, UP, DOWN
+};
+class WaveController : public GameObject
 {
     WaveControllerStateTag _state;
     MapSpace _mapSpace;
@@ -14,14 +18,17 @@ class WaveControllor : public GameObject
     const int _MAKE_COOLTIME;
     const int _POWER;
 
+    bool _isClogged[4];
 public:
-    WaveControllor(MapSpace mapSpace, int power);
-    ~WaveControllor();
+    WaveController(MapSpace mapSpace, int power);
+    ~WaveController();
 
     virtual void Init() override;
     virtual void Update() override;
     virtual void Render(HDC hdc) override;
     virtual void Release() override;
+
+    bool checkBlockCollision(Wave*);
 
     float getStartX() const
     {

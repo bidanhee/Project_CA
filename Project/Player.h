@@ -9,6 +9,7 @@ private:
 	POINT_FLOAT _center;
 	POINT_FLOAT _collisionStart;
 	POINT_FLOAT _bodyStart;
+	POINT_FLOAT _previousStart;
 
 	float _speed;     
 	int _usableBombs; 

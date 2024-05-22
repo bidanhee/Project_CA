@@ -1,4 +1,10 @@
 #include "GameObjectManager.h"
+#include "Player.h"
+#include "Item.h"
+#include "Bomb.h"
+#include "Block.h"
+#include "Wave.h"
+#include "WaveController.h"
 
 GameObjectManager::GameObjectManager()
 {
@@ -8,6 +14,7 @@ GameObjectManager::GameObjectManager()
 	_layerOrders.push_back(GameObjectTag::Wave);
 	_layerOrders.push_back(GameObjectTag::Item);
 	_layerOrders.push_back(GameObjectTag::Bomb);
+	_layerOrders.push_back(GameObjectTag::Block);
 	_layerOrders.push_back(GameObjectTag::Player);
 	_layerOrders.push_back(GameObjectTag::DesignElement);
 }
@@ -48,10 +55,7 @@ void GameObjectManager::updateObj()
 		}
 	}
 
-	/*if (GAMESTATEMANAGER->getGameStart())
-	{
-		notifyCollisions();
-	}*/
+	checkCollision();
 }
 
 void GameObjectManager::renderObj(HDC hdc)
@@ -79,8 +83,66 @@ void GameObjectManager::checkCollision()
 {
 	map<GameObjectTag, vector<GameObject*>> m;
 	RECT rcTemp;
-}
 
+	for (auto go : _gameObj)
+	{
+		m[go->getTag()].push_back(go);
+	}
+
+	for (auto player : m[GameObjectTag::Player])
+	{
+		for (auto item : m[GameObjectTag::Item])
+		{
+			Player* p = dynamic_cast<Player*>(player);
+			Item* i = dynamic_cast<Item*>(item);
+			RECT playerCollisionRect = makeRect(p->getCollisionStartX(), p->getCollisionStartY(), p->getCollisionWidth(), p->getCollisionHeight());
+			RECT itemRect = makeRect(i->getStartX(), i->getStartY(), i->getSize(), i->getSize());
+			if (IntersectRect(&rcTemp, &playerCollisionRect, &itemRect))
+			{
+				GameObjectManager::getSingleton()->removeObj(i->getId());
+				player->onCollisionEnter(item, rcTemp);
+			}
+		}
+
+		for (auto block : m[GameObjectTag::Block])
+		{
+			Player* p = dynamic_cast<Player*>(player);
+			Block* b = dynamic_cast<Block*>(block);
+			RECT playerCollisionRect = makeRect(p->getCollisionStartX(), p->getCollisionStartY(), p->getCollisionWidth(), p->getCollisionHeight());
+			RECT blockRect = makeRect(b->getStartX(), b->getStartY(), b->getSize(), b->getSize());
+			if (IntersectRect(&rcTemp, &playerCollisionRect, &blockRect))
+			{
+				player->onCollisionEnter(block, rcTemp);
+			}
+		}
+	}
+
+	for (auto item : m[GameObjectTag::Item])
+	{
+		for (auto wave : m[GameObjectTag::Wave])
+		{
+			Wave* w = dynamic_cast<Wave*>(wave);
+			Item* i = dynamic_cast<Item*>(item);
+			RECT waveRect = makeRect(w->getStartX(), w->getStartY(), w->getSize(), w->getSize());
+			RECT itemRect = makeRect(i->getStartX(), i->getStartY(), i->getSize(), i->getSize());
+			if (IntersectRect(&rcTemp, &waveRect, &itemRect))
+			{
+				GameObjectManager::getSingleton()->removeObj(i->getId());
+			}
+		}
+		for (auto waveStartingPoint : m[GameObjectTag::WaveStartingPoint])
+		{
+			Item* i = dynamic_cast<Item*>(item);
+			WaveController* wsp = dynamic_cast<WaveController*>(waveStartingPoint);
+			RECT itemRect = makeRect(i->getStartX(), i->getStartY(), i->getSize(), i->getSize());
+			RECT waveStartingPointRect = makeRect(wsp->getStartX(), wsp->getStartY(), wsp->getSize(), wsp->getSize());
+			if (IntersectRect(&rcTemp, &itemRect, &waveStartingPointRect))
+			{
+				GameObjectManager::getSingleton()->removeObj(i->getId());
+			}
+		}
+	}
+}
 
 string GameObjectManager::showTagForDebug(GameObjectTag tag)
 {
@@ -100,6 +162,8 @@ string GameObjectManager::showTagForDebug(GameObjectTag tag)
 		return "WaveStartingPoint";
 	case GameObjectTag::Item:
 		return "Item";
+	case GameObjectTag::Block:
+		return "Block";
 	default:
 		return "?";
 	}

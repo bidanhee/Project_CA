@@ -56,9 +56,38 @@ HRESULT ImageManager::Init()
 
     addFrameImage("itemBallon", "assets/item/ballon.bmp", 112, 70, 2, 1, true, MAGENTA);
     addFrameImage("itemPotion", "assets/item/potion.bmp", 112, 70, 2, 1, true, MAGENTA);
-    addFrameImage("itemPotionMakePowerMax", "assets/item/potion_make_power_max.bmp", 112, 70, 2, 1, true, MAGENTA);
+    addFrameImage("itemPotionMax", "assets/item/potion_make_power_max.bmp", 112, 70, 2, 1, true, MAGENTA);
     addFrameImage("itemSkate", "assets/item/skate.bmp", 112, 70, 2, 1, true, MAGENTA);
     
+    addFrameImage("forestBlock1", "assets/map/forest/block/block_1.bmp", 68, 68, 1, 1, true, MAGENTA);
+    addFrameImage("block1Pop", "assets/map/forest/block/block_1_pop.bmp", 340, 68, 5, 1, true, MAGENTA);
+    addFrameImage("forestBlock2", "assets/map/forest/block/block_2.bmp", 172, 135, 3, 2, true, MAGENTA);
+    addFrameImage("forestBlock3", "assets/map/forest/block/block_3.bmp", 172, 135, 3, 2, true, MAGENTA);
+    addFrameImage("forestBlock4", "assets/map/forest/block/block_4.bmp", 172, 140, 3, 2, true, MAGENTA);
+    addFrameImage("forestBlock5", "assets/map/forest/block/block_5.bmp", 172, 140, 3, 2, true, MAGENTA);
+    addFrameImage("forestBlock6", "assets/map/forest/block/block_6.bmp", 195, 138, 3, 2, true, MAGENTA);
+    addFrameImage("forestBlock7", "assets/map/forest/block/block_7.bmp", 195, 138, 3, 2, true, MAGENTA);
+    addFrameImage("forestBlock8", "assets/map/forest/block/block_8.bmp", 325, 87, 5, 1, true, MAGENTA);
+    addFrameImage("forestBlock9", "assets/map/forest/block/block_9.bmp", 325, 87, 5, 1, true, MAGENTA);
+
+    addImage("forestObject1", "assets/map/forest/object/object_1.bmp", 55, 69, true, MAGENTA);
+    addImage("forestObject2", "assets/map/forest/object/object_2.bmp", 55, 69, true, MAGENTA);
+    addImage("forestObject3", "assets/map/forest/object/object_3.bmp", 55, 69, true, MAGENTA);
+    addImage("forestObject4", "assets/map/forest/object/object_4.bmp", 61, 170, true, MAGENTA);
+    addImage("forestObject5", "assets/map/forest/object/object_5.bmp", 57, 155, true, MAGENTA);
+    addImage("forestObject6", "assets/map/forest/object/object_6.bmp", 213, 161, true, MAGENTA);
+
+    addImage("forestTile1", "assets/map/forest/tile/tile_1.bmp", 52, 52);
+    addImage("forestTile2", "assets/map/forest/tile/tile_2.bmp", 52, 52);
+    addImage("forestTile3", "assets/map/forest/tile/tile_3.bmp", 52, 52);
+    addImage("forestTile4", "assets/map/forest/tile/tile_4.bmp", 52, 52);
+    addImage("forestTile5", "assets/map/forest/tile/tile_5.bmp", 52, 52);
+    addImage("forestTile6", "assets/map/forest/tile/tile_6.bmp", 52, 52);
+    addImage("forestTile7", "assets/map/forest/tile/tile_7.bmp", 52, 52);
+    addImage("forestTile8", "assets/map/forest/tile/tile_8.bmp", 52, 52);
+    addImage("forestTile9", "assets/map/forest/tile/tile_9.bmp", 52, 52);
+    addImage("forestTile10", "assets/map/forest/tile/tile_10.bmp", 52, 52);
+
     return S_OK;
 }
 

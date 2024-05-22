@@ -74,7 +74,8 @@ enum class GameObjectTag
     DesignElement,
     Wave,
     WaveStartingPoint,
-    Item
+    Item,
+    Block
 };
 
 
@@ -108,6 +109,20 @@ enum class BombStateTag
     Pop
 };
 
+enum class BlockStateTag
+{
+    Not,
+    Set,
+    Pop
+};
+
+enum class BlockTypeTag
+{
+    PassableNormal,
+    PasslessNormal,
+    PasslessItem,
+    PasslessBreakless,
+};
 
 enum class WaveStateTag
 {
@@ -121,6 +136,15 @@ enum class WaveControllerStateTag
 {
     Making,
     Complete
+};
+
+enum class ItemTypeTag
+{
+    Not,
+    Ballon,
+    Potion,
+    PotionMax,
+    Skate
 };
 
 struct Text
@@ -190,4 +214,9 @@ inline POINT_FLOAT mapSpaceToLeftTop(int row, int col)
     pt.x = static_cast<float>(BOARD_STARTX + col * BOARD_RECTSIZE);
     pt.y = static_cast<float>(BOARD_STARTY + row * BOARD_RECTSIZE);
     return pt;
+}
+
+inline int getRand(int fromNum, int toNum)
+{
+    return rand() % (toNum - fromNum + 1) + fromNum;
 }

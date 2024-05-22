@@ -37,6 +37,7 @@ int APIENTRY WinMain(HINSTANCE _hInstance, HINSTANCE hPrevInstance, LPSTR lpszcm
     //윈도우 창 띄어라
     ShowWindow(hWnd, cmdShow);
 
+    srand(GetTickCount());
     game = new cGame(hInstance, hWnd);
 
     if (FAILED(game->Init()))
