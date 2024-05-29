@@ -61,12 +61,17 @@ HRESULT ImageManager::Init()
     
     addFrameImage("forestBlock1", "assets/map/forest/block/block_1.bmp", 68, 68, 1, 1, true, MAGENTA);
     addFrameImage("block1Pop", "assets/map/forest/block/block_1_pop.bmp", 340, 68, 5, 1, true, MAGENTA);
-    addFrameImage("forestBlock2", "assets/map/forest/block/block_2.bmp", 172, 135, 3, 2, true, MAGENTA);
-    addFrameImage("forestBlock3", "assets/map/forest/block/block_3.bmp", 172, 135, 3, 2, true, MAGENTA);
-    addFrameImage("forestBlock4", "assets/map/forest/block/block_4.bmp", 172, 140, 3, 2, true, MAGENTA);
-    addFrameImage("forestBlock5", "assets/map/forest/block/block_5.bmp", 172, 140, 3, 2, true, MAGENTA);
-    addFrameImage("forestBlock6", "assets/map/forest/block/block_6.bmp", 195, 138, 3, 2, true, MAGENTA);
-    addFrameImage("forestBlock7", "assets/map/forest/block/block_7.bmp", 195, 138, 3, 2, true, MAGENTA);
+    addFrameImage("forestBlock2", "assets/map/forest/block/block_2.bmp", 68, 68, 1, 1, true, MAGENTA);
+    addFrameImage("block2Pop", "assets/map/forest/block/block_2_pop.bmp", 340, 68, 5, 1, true, MAGENTA);
+    addFrameImage("forestBlock3", "assets/map/forest/block/block_3.bmp", 68, 68, 1, 1, true, MAGENTA);
+    addFrameImage("block3Pop", "assets/map/forest/block/block_3_pop.bmp", 340, 68, 5, 1, true, MAGENTA);
+    addFrameImage("forestBlock4", "assets/map/forest/block/block_4.bmp", 68, 68, 1, 1, true, MAGENTA);
+    addFrameImage("block4Pop", "assets/map/forest/block/block_4_pop.bmp", 340, 68, 5, 1, true, MAGENTA);
+    addFrameImage("forestBlock5", "assets/map/forest/block/block_5.bmp", 68, 68, 1, 1, true, MAGENTA);
+    addFrameImage("block5Pop", "assets/map/forest/block/block_5_pop.bmp", 340, 68, 5, 1, true, MAGENTA);
+    addFrameImage("forestBlock6", "assets/map/forest/block/block_6.bmp", 68, 68, 1, 1, true, MAGENTA);
+    addFrameImage("block6Pop", "assets/map/forest/block/block_6_pop.bmp", 340, 68, 5, 1, true, MAGENTA);
+    //addFrameImage("forestBlock7", "assets/map/forest/block/block_7.bmp", 195, 138, 3, 2, true, MAGENTA);
     addFrameImage("forestBlock8", "assets/map/forest/block/block_8.bmp", 325, 87, 5, 1, true, MAGENTA);
     addFrameImage("forestBlock9", "assets/map/forest/block/block_9.bmp", 325, 87, 5, 1, true, MAGENTA);
 

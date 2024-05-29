@@ -1,4 +1,6 @@
 #include "MapManager.h"
+#include "gameObjectManager.h"
+#include "Block.h"
 
 vector<vector<Tile>> MapManager::makeMap(int mapNumb)
 {
@@ -83,3 +85,162 @@ vector<vector<Tile>> MapManager::makeMap(int mapNumb)
 
     return _vvTile;
 }
+
+void MapManager::makeBlocks(int mapNumb)
+{
+    MapSpace mapSpace;
+    Block* block = new Block(mapSpace, BlockImageTypeTag::GreenBlock);
+    switch (mapNumb)
+    {
+    case 1:
+
+        for (int i = 0; i <= 12; i++)
+        {
+            mapSpace.SetSpace(i, 0);
+            if (i == 2 || i == 6 || i == 10)
+            {
+                block = new Block(mapSpace, BlockImageTypeTag::GreenBlock);
+                GameObjectManager::getSingleton()->registerObj(block);
+            }
+            else if (i == 3 || i == 7)
+            {
+                block = new Block(mapSpace, BlockImageTypeTag::YGreenBlock);
+                GameObjectManager::getSingleton()->registerObj(block);
+            }
+
+            mapSpace.SetSpace(i, 1);
+            if (i == 3 || i == 7) block = new Block(mapSpace, BlockImageTypeTag::GreenBlock);
+            else if (!(i % 2)) block = new Block(mapSpace, BlockImageTypeTag::Object1);
+            GameObjectManager::getSingleton()->registerObj(block);
+
+            mapSpace.SetSpace(i, 2);
+            if (i % 2) block = new Block(mapSpace, BlockImageTypeTag::YGreenBlock);
+            else block = new Block(mapSpace, BlockImageTypeTag::GreenBlock);
+            GameObjectManager::getSingleton()->registerObj(block);
+
+            mapSpace.SetSpace(i, 3);
+            if (i % 2) block = new Block(mapSpace, BlockImageTypeTag::GreenBlock);
+            else block = new Block(mapSpace, BlockImageTypeTag::Object3);
+            GameObjectManager::getSingleton()->registerObj(block);
+
+            mapSpace.SetSpace(i, 4);
+            if (i == 9)block = new Block(mapSpace, BlockImageTypeTag::BasketBlock);
+            else if (i % 2) block = new Block(mapSpace, BlockImageTypeTag::YGreenBlock);
+            else block = new Block(mapSpace, BlockImageTypeTag::GreenBlock);
+            GameObjectManager::getSingleton()->registerObj(block);
+
+            mapSpace.SetSpace(i, 5);
+            if (i == 9)block = new Block(mapSpace, BlockImageTypeTag::Object1);
+            else if (i == 10)block = new Block(mapSpace, BlockImageTypeTag::YGreenBlock);
+            else if (i == 11)block = new Block(mapSpace, BlockImageTypeTag::GreenBlock);
+            else if (i == 12)block = new Block(mapSpace, BlockImageTypeTag::GreenBlock);
+            else if (i % 2) block = new Block(mapSpace, BlockImageTypeTag::GreenBlock);
+            else block = new Block(mapSpace, BlockImageTypeTag::Object3);
+            if(!(i == 1))
+            GameObjectManager::getSingleton()->registerObj(block);
+
+            mapSpace.SetSpace(i, 6);
+            if (i == 10 || i == 12)block = new Block(mapSpace, BlockImageTypeTag::Object1);
+            else if (i % 2) block = new Block(mapSpace, BlockImageTypeTag::YGreenBlock);
+            else block = new Block(mapSpace, BlockImageTypeTag::GreenBlock);
+            if (!(i == 1 || i == 2))
+                GameObjectManager::getSingleton()->registerObj(block);
+
+            mapSpace.SetSpace(i, 7);
+            if (i == 10)block = new Block(mapSpace, BlockImageTypeTag::GreenBlock);
+            else if (i == 12)block = new Block(mapSpace, BlockImageTypeTag::YGreenBlock);
+            else if (i % 2) block = new Block(mapSpace, BlockImageTypeTag::GreenBlock);
+            else block = new Block(mapSpace, BlockImageTypeTag::Object2);
+            GameObjectManager::getSingleton()->registerObj(block);
+
+            mapSpace.SetSpace(i, 8);
+            if (i == 5)block = new Block(mapSpace, BlockImageTypeTag::BasketBlock);
+            else if (i == 10 || i == 12)block = new Block(mapSpace, BlockImageTypeTag::Object1);
+            else if (i % 2) block = new Block(mapSpace, BlockImageTypeTag::YGreenBlock);
+            else block = new Block(mapSpace, BlockImageTypeTag::GreenBlock);
+            if (!(i == 11))
+                GameObjectManager::getSingleton()->registerObj(block);
+
+
+            mapSpace.SetSpace(i, 9);
+            if (i == 1 || i == 5 || i == 9)
+            {
+                block = new Block(mapSpace, BlockImageTypeTag::GreenBlock);
+                GameObjectManager::getSingleton()->registerObj(block);
+            }
+            else if (i == 0 || i == 4 || i == 6 || i == 8)
+            {
+                block = new Block(mapSpace, BlockImageTypeTag::Object1);
+                GameObjectManager::getSingleton()->registerObj(block);
+            }
+            else if (i == 2)
+            {
+                block = new Block(mapSpace, BlockImageTypeTag::Object3);
+                GameObjectManager::getSingleton()->registerObj(block);
+            }
+            else if (i == 12)
+            {
+                block = new Block(mapSpace, BlockImageTypeTag::YGreenBlock);
+                GameObjectManager::getSingleton()->registerObj(block);
+            }
+
+            mapSpace.SetSpace(i, 10);
+            if (i == 0 || i == 4 || i == 8)
+            {
+                block = new Block(mapSpace, BlockImageTypeTag::GreenBlock);
+                GameObjectManager::getSingleton()->registerObj(block);
+            }
+            else if (i == 1 || i == 5 || i == 9)
+            {
+                block = new Block(mapSpace, BlockImageTypeTag::YGreenBlock);
+                GameObjectManager::getSingleton()->registerObj(block);
+            }
+            else if (i == 10 || i == 12)
+            {
+                block = new Block(mapSpace, BlockImageTypeTag::Object1);
+                GameObjectManager::getSingleton()->registerObj(block);
+            }
+
+            mapSpace.SetSpace(i, 11);
+            if (i == 1 || i == 3 || i == 5 || i == 8)
+            {
+                block = new Block(mapSpace, BlockImageTypeTag::Object2);
+                GameObjectManager::getSingleton()->registerObj(block);
+            }
+            else if (i == 0 || i == 3 || i == 5 || i == 7)
+            {
+                block = new Block(mapSpace, BlockImageTypeTag::YGreenBlock);
+                GameObjectManager::getSingleton()->registerObj(block);
+            }
+            else if (i == 8 || i == 11 || i == 12)
+            {
+                block = new Block(mapSpace, BlockImageTypeTag::GreenBlock);
+                GameObjectManager::getSingleton()->registerObj(block);
+            }
+            else if (i == 10)
+            {
+                block = new Block(mapSpace, BlockImageTypeTag::BasketBlock);
+                GameObjectManager::getSingleton()->registerObj(block);
+            }
+
+            mapSpace.SetSpace(i, 12);
+            if (!(i % 2) && i < 7) block = new Block(mapSpace, BlockImageTypeTag::GreenBlock);
+            else block = new Block(mapSpace, BlockImageTypeTag::Object1);
+            GameObjectManager::getSingleton()->registerObj(block);
+
+            mapSpace.SetSpace(i, 13);
+            if(i >= 11) block = new Block(mapSpace, BlockImageTypeTag::Object1);
+            else if (i % 2) block = new Block(mapSpace, BlockImageTypeTag::GreenBlock);
+            else block = new Block(mapSpace, BlockImageTypeTag::YGreenBlock);
+            GameObjectManager::getSingleton()->registerObj(block);
+
+            mapSpace.SetSpace(i, 14);
+            if (i % 2 && i < 7) block = new Block(mapSpace, BlockImageTypeTag::YGreenBlock);
+            else block = new Block(mapSpace, BlockImageTypeTag::Object1);
+            GameObjectManager::getSingleton()->registerObj(block);
+        }
+
+        break;
+    }
+}
+

@@ -16,7 +16,7 @@ HRESULT cGame::Init()
     _vvTile = MapManager::makeMap(1);
 
 
-    Player* player1 = new Player(PlayerTypeTag::SoloPlayer, 100, 100);
+    Player* player1 = new Player(PlayerTypeTag::SoloPlayer, 50, 100);
     /*Player* player2 = new Player(PlayerTypeTag::SoloPlayer, 400, 400);
     Bomb* testBomb = new Bomb(player1, player1->getCenter(), 1);
     Bomb* testBomb2 = new Bomb(player2, player2->getCenter(), 1);
@@ -27,14 +27,8 @@ HRESULT cGame::Init()
     GameObjectManager::getSingleton()->registerObj(testBomb2);
     GameObjectManager::getSingleton()->registerObj(testBomb3);*/
 
-    MapSpace mapSpace;
-    mapSpace.row = 3;
-    mapSpace.col = 3;
-    Block* block = new Block(mapSpace, static_cast<BlockTypeTag>(1));
-    GameObjectManager::getSingleton()->registerObj(block);
-    mapSpace.col = 4;
-    Block* block2 = new Block(mapSpace, static_cast<BlockTypeTag>(1));
-    GameObjectManager::getSingleton()->registerObj(block2);
+    MapManager::makeBlocks(1);
+
     return S_OK;
 }
 
@@ -50,7 +44,7 @@ void cGame::Update()
     WinFroc::Update();
     GameObjectManager::getSingleton()->updateObj();
 
-    testCoolDown -= TimeManager::getSingleton()->getElapsedTime();
+    /*testCoolDown -= TimeManager::getSingleton()->getElapsedTime();
     if (testCoolDown <= 0.f)
     {
         MapSpace mapSpace;
@@ -59,7 +53,7 @@ void cGame::Update()
         Item* item = new Item(mapSpace, static_cast<ItemTypeTag>(getRand(1, 4)));
         GameObjectManager::getSingleton()->registerObj(item);
         testCoolDown += 3.f;
-    }
+    }*/
 }
 
 void cGame::Render()

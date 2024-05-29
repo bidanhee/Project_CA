@@ -11,8 +11,9 @@ private:
 
 	BlockStateTag _previousState;
 	BlockStateTag _currentState;
+	BlockTypeTag _blockType;
 
-	const BlockTypeTag _blockType;
+	const BlockImageTypeTag _blockImageType;
 	const int _SIZE;
 	const float _ANIMATION_COOLTIME;
 	const float _POP_COOLTIME;
@@ -20,7 +21,7 @@ private:
 	const float _DISAPPEAR_TIME;
 
 public:
-	Block(MapSpace, BlockTypeTag);
+	Block(MapSpace, BlockImageTypeTag);
 	~Block();
 
 	virtual void Init() override;

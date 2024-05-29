@@ -12,6 +12,7 @@ private:
 	POINT_FLOAT _previousStart;
 
 	float _speed;     
+	float _prevSpeed;
 	int _usableBombs; 
 	int _usedBombs; 
 	int _power;

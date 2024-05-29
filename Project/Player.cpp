@@ -7,6 +7,7 @@
 
 #include "Bomb.h"
 #include "Item.h"
+#include "PlayScene.h"
 
 Player::Player(PlayerTypeTag playerType, float startX, float startY)
 	: GameObject(GameObjectTag::Player)
@@ -38,7 +39,7 @@ Player::Player(PlayerTypeTag playerType, float startX, float startY)
 {
 	_start.x = startX;
 	_start.y = startY;
-
+	_prevSpeed = _speed;
 	setCenter();              
 	setCollisionStart();       
 	setBodyStart();           
@@ -81,28 +82,34 @@ void Player::Update()
 			{
 				_startTime = static_cast<int>(TimeManager::getSingleton()->getWorldTime());
 				setAnimationInfo("playerBazziTrap", _TRAP_COOLTIME);
-				_speed = _TRAP_SPEED; //스피드 느려짐
+				_prevSpeed = _speed;
+				_speed = _TRAP_SPEED;
 				_previousState = _currentState;
 			}
 			int maxFrame = ImageManager::getSingleton()->findImage(getStrKey())->getMaxFrameX();
 			animation(maxFrame);
 			if (getFrame() >= maxFrame)
 				setFrame(8);
+			
+			if (KeyManager::getSingleton()->isStayKeyDown(VK_F1))
+			{
+				_previousState = _currentState;
+				_currentState = PlayerStateTag::Live;
+			}
 
 			//조금씩 아래로 내려온다
 			_trapMoveCoolDown -= TimeManager::getSingleton()->getElapsedTime();
 			if (_trapMoveCoolDown <= 0.f)
 			{
 				_trapMoveCoolDown = _TRAP_MOVE_COOLTIME;
-				if (_start.y + 2.f <= BOARD_STARTY + BOARD_HEIGHT - _HEIGHT) //빠져나가지 않게 처리
+				if (_start.y + 2.f <= BOARD_STARTY + BOARD_HEIGHT - _HEIGHT)
 					_start.y += 2.f;
 			}
 
 			int currentTime = static_cast<int>(TimeManager::getSingleton()->getWorldTime());
-			//cout << currentTime - _startTime << endl;
-			if (currentTime - _startTime > 7) //7초가 지나면 죽은 상태로!!
+			if (currentTime - _startTime > 7) 
 			{
-				_startTime = static_cast<int>(TimeManager::getSingleton()->getWorldTime()); //죽고나서 몇초 시간 재기위함
+				_startTime = static_cast<int>(TimeManager::getSingleton()->getWorldTime()); 
 				_previousState = _currentState;
 				_currentState = PlayerStateTag::Die;
 			}
@@ -139,16 +146,16 @@ void Player::Update()
 		}
 		else if (_currentState == PlayerStateTag::Die)
 		{
-			/*GAMESTATEMANAGER->setGameOver(true);//게임오버 상태로 만든다
+			//GAMESTATEMANAGER->setGameOver(true);
 			if (_currentState != _previousState)
 			{
-				SOUNDMANAGER->play(static_cast<int>(SoundTypeTag::PlayerDie), SoundTypeTag::PlayerDie);
-				SOUNDMANAGER->play(static_cast<int>(SoundTypeTag::GameOver), SoundTypeTag::GameOver);
+				//SOUNDMANAGER->play(static_cast<int>(SoundTypeTag::PlayerDie), SoundTypeTag::PlayerDie);
+				//SOUNDMANAGER->play(static_cast<int>(SoundTypeTag::GameOver), SoundTypeTag::GameOver);
 				setAnimationInfo("playerBazziDie", _DIE_COOLTIME);
 				_previousState = _currentState;
-				//_flag = true;
+				
 			}
-			int maxFrame = IMAGEMANAGER->findImage(getStrKey())->getMaxFrameX();
+			int maxFrame = ImageManager::getSingleton()->findImage(getStrKey())->getMaxFrameX();
 			animation(maxFrame);
 			if (_count <= 3)
 			{
@@ -161,12 +168,11 @@ void Player::Update()
 			else
 				setFrame(maxFrame);
 
-			//죽은지 5초 뒤에 게임오브젝트 매니저에서 삭제
-			int currentTime = static_cast<int>(TIMEMANAGER->getWorldTime());
+			int currentTime = static_cast<int>(TimeManager::getSingleton()->getWorldTime());
 			if (currentTime - _startTime > 5)
-				GAMEOBJMANGER->removeObj(getId());
-				*/
-		} //죽은 경우 끝
+				GameObjectManager::getSingleton()->removeObj(getId());
+				
+		} 
 		else if (_currentState == PlayerStateTag::Live)
 		{
 			if (_currentState != _previousState)
@@ -174,6 +180,7 @@ void Player::Update()
 				//SOUNDMANAGER->play(static_cast<int>(SoundTypeTag::BombPop), SoundTypeTag::BombPop);
 				setAnimationInfo("playerBazziLive", 0.3f);
 				_previousState = _currentState;
+				_speed = _prevSpeed;
 			}
 			int maxFrame = ImageManager::getSingleton()->findImage(getStrKey())->getMaxFrameX();
 			animation(maxFrame);
@@ -190,7 +197,13 @@ void Player::Update()
 				setAnimationInfo("playerBazziJump", 0.3f);
 				_previousState = _currentState;
 			}
-			animation(ImageManager::getSingleton()->findImage(getStrKey())->getMaxFrameX());
+			int maxFrame = ImageManager::getSingleton()->findImage(getStrKey())->getMaxFrameX();
+			animation(maxFrame);
+			if (getFrame() >= maxFrame)
+			{
+				_previousState = _currentState;
+				_currentState = PlayerStateTag::Wait;
+			}
 		}
 		else
 		{
@@ -204,13 +217,17 @@ void Player::Update()
 					{
 						float currentTime;
 						currentTime = TimeManager::getSingleton()->getWorldTime();
-						if (currentTime - _bombCreateTime > _BOMB_CREATE_COOLTIME)
+						MapSpace m = centerToMapSpace(_center.x, _center.y);
+						if (PlayScene::bombArr[m.row][m.col] == BombOnTyleTag::Not)
 						{
-							Bomb* bomb = new Bomb(this, _center, _power);
-							GameObjectManager::getSingleton()->registerObj(bomb);
-							_usedBombs++;
+							if (currentTime - _bombCreateTime > _BOMB_CREATE_COOLTIME)
+							{
+								Bomb* bomb = new Bomb(this, _center, _power);
+								GameObjectManager::getSingleton()->registerObj(bomb);
+								_usedBombs++;
 
-							_bombCreateTime = TimeManager::getSingleton()->getWorldTime();
+								_bombCreateTime = TimeManager::getSingleton()->getWorldTime();
+							}
 						}
 					}
 
@@ -219,17 +236,6 @@ void Player::Update()
 						_check = true;
 						//SOUNDMANAGER->play(static_cast<int>(SoundTypeTag::BombSet), SoundTypeTag::BombSet);
 					}
-
-					/*MapSpace m = centerToMapSpace(_center.x, _center.y);
-					if (!PlayScene::mapArr[m.row][m.col].isBomb)
-					{
-						if (_usedBombs < _usableBombs)
-						{
-							Bomb* bomb = new Bomb(this, _center, _power);
-							GAMEOBJMANGER->registerObj(bomb);
-							_usedBombs++;
-						}
-					}*/
 				}
 
 				if ((_playerType == PlayerTypeTag::SoloPlayer && KeyManager::getSingleton()->isStayKeyDown(VK_UP)) ||
@@ -315,7 +321,7 @@ void Player::Update()
 					{
 						//캐릭터는 항상 0이나 4프레임으로 끝나야함
 						int frameX = ImageManager::getSingleton()->findImage(getStrKey())->getFrameX();
-						if (frameX != 0 || frameX != 4)
+						if ((frameX != 0) ||( frameX != 4))
 							setFrame(0);
 
 						//키입력이 없고, 일정시간이 지나면 정면을 바라본다

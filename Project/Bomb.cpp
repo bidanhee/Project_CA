@@ -3,6 +3,7 @@
 #include "ImageManager.h"
 #include "gameObjectManager.h"
 #include "WaveController.h"
+#include "PlayScene.h"
 
 Bomb::Bomb(Player* player, POINT_FLOAT center, int power) 
 	: GameObject(GameObjectTag::Bomb)
@@ -26,6 +27,8 @@ Bomb::Bomb(Player* player, POINT_FLOAT center, int power)
 	_start.y = _center.y - BOARD_RECTSIZE / 2.f;
 
 	_mapSpace = leftTopToMapSpace(_start.x, _start.y);
+
+	PlayScene::changeBombArr(_mapSpace.row, _mapSpace.col, BombOnTyleTag::PlayerOnBomb);
 }
 
 Bomb::~Bomb()
@@ -71,6 +74,7 @@ void Bomb::Update()
 		if (getFrame() == ImageManager::getSingleton()->findImage(getStrKey())->getMaxFrameX())
 		{
 			_bombOwner->changeUsedBombs();
+			PlayScene::changeBombArr(_mapSpace.row, _mapSpace.col, BombOnTyleTag::Not);
 			GameObjectManager::getSingleton()->removeObj(getId());
 		}
 	}

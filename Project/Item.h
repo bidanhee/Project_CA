@@ -10,6 +10,9 @@ private:
 
 	ItemTypeTag _itemType;
 
+	float _isNewCoolDown;
+	bool _isNew;
+
 	const int _SIZE;
 	const int _ANIMATION_COOLTIME;
 public:
@@ -28,4 +31,5 @@ public:
 	float getCenterX() { return _center.x; }
 	float getCenterY() { return _center.y; }
 	int getSize() { return _SIZE; }
+	bool getIsNew() { return _isNew; }
 };

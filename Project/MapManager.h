@@ -6,4 +6,5 @@ class MapManager
 {
 public:
 	static vector<vector<Tile>> makeMap(int);
+	static void makeBlocks(int);
 };

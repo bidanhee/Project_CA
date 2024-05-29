@@ -122,6 +122,22 @@ enum class BlockTypeTag
     PasslessNormal,
     PasslessItem,
     PasslessBreakless,
+    Object
+};
+
+enum class BlockImageTypeTag
+{
+    BasketBlock,
+    GreenBlock,
+    YGreenBlock,
+    FlowerBlock,
+    GrassBlock1,
+    GrassBlock2,
+    GrassWithBerryBlock1,
+    GrassWithBerryBlock2,
+    Object1,
+    Object2,
+    Object3
 };
 
 enum class WaveStateTag
@@ -136,6 +152,12 @@ enum class WaveControllerStateTag
 {
     Making,
     Complete
+};
+
+enum class BombOnTyleTag
+{
+    Not,
+    PlayerOnBomb
 };
 
 enum class ItemTypeTag
@@ -198,6 +220,21 @@ struct MapSpace
 {
     int row;
     int col;
+    MapSpace()
+        : row(0)
+        , col(0)
+    {
+    }
+    MapSpace(int r, int c)
+    {
+        row = r;
+        col = c;
+    }
+    void SetSpace(int r, int c)
+    {
+        row = r;
+        col = c;
+    }
 };
 
 inline MapSpace leftTopToMapSpace(float startX, float startY)
@@ -214,6 +251,21 @@ inline POINT_FLOAT mapSpaceToLeftTop(int row, int col)
     pt.x = static_cast<float>(BOARD_STARTX + col * BOARD_RECTSIZE);
     pt.y = static_cast<float>(BOARD_STARTY + row * BOARD_RECTSIZE);
     return pt;
+}
+
+inline MapSpace centerToMapSpace(float centerX, float centerY)
+{
+    MapSpace m;
+    float tempCenterX = static_cast<float>(static_cast<int>((BOARD_STARTX + centerX) / BOARD_RECTSIZE) * BOARD_RECTSIZE);
+    float tempCenterY = static_cast<float>(static_cast<int>(centerY / BOARD_RECTSIZE) * BOARD_RECTSIZE + (BOARD_RECTSIZE / 2) + 1);
+
+    float tempStartX = tempCenterX - BOARD_RECTSIZE / 2.f;
+    float tempStartY = tempCenterY - BOARD_RECTSIZE / 2.f;
+
+    m.col = (static_cast<int>(tempStartX) - BOARD_STARTX) / BOARD_RECTSIZE;
+    m.row = (static_cast<int>(tempStartY) - BOARD_STARTY) / BOARD_RECTSIZE;
+
+    return m;
 }
 
 inline int getRand(int fromNum, int toNum)

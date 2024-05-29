@@ -8,7 +8,7 @@ Wave::Wave(int row, int col, WaveStateTag state, int power)
     , _state(state)
 	, _startTime(TimeManager::getSingleton()->getWorldTime())
 	, _SIZE(BOARD_RECTSIZE)
-	, _WAVE_COOLTIME(0.05f)
+	, _WAVE_COOLTIME(0.02f)
 	, _POWER(power)
 {
 	_mapSpace.row = row;

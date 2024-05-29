@@ -12,9 +12,9 @@ GameObjectManager::GameObjectManager()
 
 	_layerOrders.push_back(GameObjectTag::WaveStartingPoint);
 	_layerOrders.push_back(GameObjectTag::Wave);
+	_layerOrders.push_back(GameObjectTag::Block);
 	_layerOrders.push_back(GameObjectTag::Item);
 	_layerOrders.push_back(GameObjectTag::Bomb);
-	_layerOrders.push_back(GameObjectTag::Block);
 	_layerOrders.push_back(GameObjectTag::Player);
 	_layerOrders.push_back(GameObjectTag::DesignElement);
 }
@@ -115,6 +115,33 @@ void GameObjectManager::checkCollision()
 				player->onCollisionEnter(block, rcTemp);
 			}
 		}
+
+		for (auto wave : m[GameObjectTag::Wave])
+		{
+			Player* p = dynamic_cast<Player*>(player);
+			Wave* w = dynamic_cast<Wave*>(wave);
+			RECT playerCollisionRect = playerCollisionRect = makeRect(p->getCollisionStartX(), p->getCollisionStartY(), p->getCollisionWidth(), p->getCollisionHeight());
+			RECT waveRect = makeRect(w->getStartX(), w->getStartY(), w->getSize(), w->getSize());
+			if (IntersectRect(&rcTemp, &playerCollisionRect, &waveRect))
+			{
+				player->onCollisionEnter(wave, rcTemp);
+			}
+		}
+	
+		for (auto waveStartingPoint : m[GameObjectTag::WaveStartingPoint])
+		{
+			Player* p = dynamic_cast<Player*>(player);
+			WaveController* wsp = dynamic_cast<WaveController*>(waveStartingPoint);
+			RECT playerCollisionRect = makeRect(p->getCollisionStartX(), p->getCollisionStartY(), p->getCollisionWidth(), p->getCollisionHeight());
+			RECT waveStartingPointRect = makeRect(wsp->getStartX(), wsp->getStartY(), wsp->getSize(), wsp->getSize());
+			if (IntersectRect(&rcTemp, &playerCollisionRect, &waveStartingPointRect))
+			{
+				player->onCollisionEnter(wsp, rcTemp);
+			}
+
+		}
+
+
 	}
 
 	for (auto item : m[GameObjectTag::Item])
@@ -127,7 +154,10 @@ void GameObjectManager::checkCollision()
 			RECT itemRect = makeRect(i->getStartX(), i->getStartY(), i->getSize(), i->getSize());
 			if (IntersectRect(&rcTemp, &waveRect, &itemRect))
 			{
-				GameObjectManager::getSingleton()->removeObj(i->getId());
+				if (i->getIsNew() == false)
+				{
+					GameObjectManager::getSingleton()->removeObj(i->getId());
+				}
 			}
 		}
 		for (auto waveStartingPoint : m[GameObjectTag::WaveStartingPoint])
@@ -138,7 +168,10 @@ void GameObjectManager::checkCollision()
 			RECT waveStartingPointRect = makeRect(wsp->getStartX(), wsp->getStartY(), wsp->getSize(), wsp->getSize());
 			if (IntersectRect(&rcTemp, &itemRect, &waveStartingPointRect))
 			{
-				GameObjectManager::getSingleton()->removeObj(i->getId());
+				if (i->getIsNew() == false)
+				{
+					GameObjectManager::getSingleton()->removeObj(i->getId());
+				}
 			}
 		}
 	}
@@ -171,9 +204,17 @@ string GameObjectManager::showTagForDebug(GameObjectTag tag)
 
 void GameObjectManager::debug(HDC hdc)
 {
+	int j = 0;
 	Text(15, 30, 80, "GameObj size: " + to_string(getGameObjSize()))(hdc);
 	for (size_t i = 0; i < _gameObj.size(); ++i)
 	{
-		Text(15, 30, 100 + (15 * i), "ID: " + to_string(_gameObj[i]->getId()) + ", TAG: " + showTagForDebug(_gameObj[i]->getTag()), BLACK)(hdc);
+		if (_gameObj[i]->getTag() != GameObjectTag::Block)
+		{
+			Text(15, 30, 100 + (15 * (i - j)), "ID: " + to_string(_gameObj[i]->getId()) + ", TAG: " + showTagForDebug(_gameObj[i]->getTag()), BLACK)(hdc);
+		}
+		else
+		{
+			j++;
+		}
 	}
 }

@@ -105,10 +105,9 @@ bool WaveController::checkBlockCollision(Wave* w)
 			if ((b->getState() != BlockStateTag::Pop))
 			{
 				b->setState(BlockStateTag::Pop);
-				//TODO: 블록마다 어쩌구 상호작용
-				//GameObjectManager::getSingleton()->removeObj(b->getId());
 				return true;
 			}
+			return true;
 		}
 	}
 
