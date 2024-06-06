@@ -1,5 +1,6 @@
 #include "winFroc.h"
-
+#include "SceneManager.h"
+#include "SoundManager.h"
 WinFroc::WinFroc()
 {
 }
@@ -22,10 +23,13 @@ HRESULT WinFroc::Init(bool managerInit)
     _managerInit = managerInit;
     if (_managerInit)
     {
+        SoundManager::getSingleton()->Init();
+        SoundManager::getSingleton()->setVolume(1.0f);
         ImageManager::getSingleton()->InitHandle(m_hInstance, m_hWnd);
         ImageManager::getSingleton()->Init();
         TimeManager::getSingleton()->Init();
         KeyManager::getSingleton()->Init();
+        SceneManager::getSingleton()->Init();
     }
     return S_OK;
 }
@@ -37,6 +41,7 @@ void WinFroc::Release()
         ImageManager::getSingleton()->Release();
         TimeManager::getSingleton()->Release();
         KeyManager::getSingleton()->Release();
+        SceneManager::getSingleton()->Release();
     }
 
     ReleaseDC(m_hWnd, _hdc);
@@ -58,8 +63,8 @@ LRESULT WinFroc::MainProc(HWND _hwnd, UINT iMessage, WPARAM wParam, LPARAM lPara
     case WM_MOUSEMOVE:
         ptMouse.x = LOWORD(lParam);
         ptMouse.y = HIWORD(lParam);
-        break;
 
+        break;
     case WM_KEYDOWN:
         switch (wParam)
         {

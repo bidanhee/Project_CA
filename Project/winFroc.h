@@ -4,6 +4,7 @@
 #include "ImageManager.h"
 #include "TimeManager.h"
 #include "KeyManager.h"
+#include "SceneManager.h"
 
 static Image* _backbuffer = ImageManager::getSingleton()->addImage("backBuffer", WINSIZEX, WINSIZEY);
 

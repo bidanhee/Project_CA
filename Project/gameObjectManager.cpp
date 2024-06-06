@@ -5,6 +5,7 @@
 #include "Block.h"
 #include "Wave.h"
 #include "WaveController.h"
+#include "PlayScene.h"
 
 GameObjectManager::GameObjectManager()
 {
@@ -108,7 +109,7 @@ void GameObjectManager::checkCollision()
 		{
 			Player* p = dynamic_cast<Player*>(player);
 			Block* b = dynamic_cast<Block*>(block);
-			RECT playerCollisionRect = makeRect(p->getCollisionStartX(), p->getCollisionStartY(), p->getCollisionWidth(), p->getCollisionHeight());
+			RECT playerCollisionRect = makeRect(p->getBodyStartX(), p->getBodyStartY(), p->getBodyWidth(), p->getBodyHeight());
 			RECT blockRect = makeRect(b->getStartX(), b->getStartY(), b->getSize(), b->getSize());
 			if (IntersectRect(&rcTemp, &playerCollisionRect, &blockRect))
 			{
@@ -138,10 +139,33 @@ void GameObjectManager::checkCollision()
 			{
 				player->onCollisionEnter(wsp, rcTemp);
 			}
-
 		}
 
-
+		for (auto bomb : m[GameObjectTag::Bomb])
+		{
+			Player* p = dynamic_cast<Player*>(player);
+			Bomb* b = dynamic_cast<Bomb*>(bomb);
+			RECT playerCollisionRect = makeRect(p->getBodyStartX(), p->getBodyStartY(), p->getBodyWidth(), p->getBodyHeight());
+			RECT bombRect = makeRect(b->getStartX(), b->getStartY(), b->getSize(), b->getSize());
+			MapSpace mapSpace = leftTopToMapSpace(b->getStartX(), b->getStartY());
+			if (PlayScene::bombArr[mapSpace.row][mapSpace.col] == BombOnTyleTag::PlayerOnBomb)
+			{
+				if (!IntersectRect(&rcTemp, &playerCollisionRect, &bombRect))
+				{
+					if (b->getBombOwner() == p)
+					{
+						PlayScene::changeBombArr(mapSpace.row, mapSpace.col, BombOnTyleTag::NormalBomb);
+					}
+				}
+			}
+			else
+			{
+				if (IntersectRect(&rcTemp, &playerCollisionRect, &bombRect))
+				{
+					player->onCollisionEnter(bomb, rcTemp);
+				}
+			}
+		}
 	}
 
 	for (auto item : m[GameObjectTag::Item])
@@ -174,6 +198,44 @@ void GameObjectManager::checkCollision()
 				}
 			}
 		}
+	}
+
+	Player* p1 = nullptr;
+	Player* p2 = nullptr;
+	RECT player1Rect;
+	RECT player2Rect;
+	for (auto player : m[GameObjectTag::Player])
+	{
+		Player* p = dynamic_cast<Player*>(player);
+		if (p->getPlayerType() == PlayerTypeTag::Player1)
+		{
+			p1 = p;
+			player1Rect = makeRect(p->getStartX(), p->getStartY(), p->getWidth(), p->getHeight());
+		}
+		if (p->getPlayerType() == PlayerTypeTag::Player2)
+		{
+			p2 = p;
+			player2Rect = makeRect(p->getStartX(), p->getStartY(), p->getWidth(), p->getHeight());
+		}
+
+		if (p1 && p2)
+		{
+			if (IntersectRect(&rcTemp, &player1Rect, &player2Rect))
+			{
+				if (!(p1->getPlayerState() == PlayerStateTag::Trap && p2->getPlayerState() == PlayerStateTag::Trap))
+				{
+					if (p1->getPlayerState() == PlayerStateTag::Trap)
+					{
+						p1->setPlayerState(PlayerStateTag::Die);
+					}
+					else if (p2->getPlayerState() == PlayerStateTag::Trap)
+					{
+						p2->setPlayerState(PlayerStateTag::Die);
+					}
+				}
+			}
+		}
+
 	}
 }
 

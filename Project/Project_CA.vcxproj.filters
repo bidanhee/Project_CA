@@ -25,6 +25,9 @@
     <Filter Include="소스 파일\Object">
       <UniqueIdentifier>{56b714f3-0fea-4d66-90f7-f393550a1531}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Framework\FMOD">
+      <UniqueIdentifier>{66d13494-5b49-49f8-8942-d98cad3b96a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -83,6 +86,15 @@
     </ClCompile>
     <ClCompile Include="PlayScene.cpp">
       <Filter>소스 파일\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>소스 파일\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="MainScene.cpp">
+      <Filter>소스 파일\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>소스 파일\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -149,5 +161,28 @@
     <ClInclude Include="PlayScene.h">
       <Filter>소스 파일\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>소스 파일\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="MainScene.h">
+      <Filter>소스 파일\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>소스 파일\Manager</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="FMOD\lib\x64\fmod.dll">
+      <Filter>소스 파일\Framework\FMOD</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="FMOD\lib\x64\fmod_vc.lib">
+      <Filter>소스 파일\Framework\FMOD</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="FMOD\lib\x64\fmodL.dll">
+      <Filter>소스 파일\Framework\FMOD</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="FMOD\lib\x64\fmodL_vc.lib">
+      <Filter>소스 파일\Framework\FMOD</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>

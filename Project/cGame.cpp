@@ -1,4 +1,5 @@
 #include "cGame.h"
+#include "SceneManager.h"
 
 cGame::cGame(HINSTANCE instance, HWND wnd)
 {
@@ -8,26 +9,16 @@ cGame::cGame(HINSTANCE instance, HWND wnd)
 cGame::~cGame()
 {
 }
-vector<vector<Tile>> _vvTile;
+//vector<vector<Tile>> _vvTile;
 HRESULT cGame::Init()
 {
     WinFroc::Init(true);
 
-    _vvTile = MapManager::makeMap(1);
-
-
+    /*_vvTile = MapManager::makeMap(1);
     Player* player1 = new Player(PlayerTypeTag::SoloPlayer, 50, 100);
-    /*Player* player2 = new Player(PlayerTypeTag::SoloPlayer, 400, 400);
-    Bomb* testBomb = new Bomb(player1, player1->getCenter(), 1);
-    Bomb* testBomb2 = new Bomb(player2, player2->getCenter(), 1);
-    Bomb* testBomb3 = new Bomb(player2, player2->getCenter(), 1);*/
+    Player* player2 = new Player(PlayerTypeTag::SoloPlayer, 400, 400);
     GameObjectManager::getSingleton()->registerObj(player1);
-    /*GameObjectManager::getSingleton()->registerObj(player2);
-    GameObjectManager::getSingleton()->registerObj(testBomb);
-    GameObjectManager::getSingleton()->registerObj(testBomb2);
-    GameObjectManager::getSingleton()->registerObj(testBomb3);*/
-
-    MapManager::makeBlocks(1);
+    MapManager::makeBlocks(1);*/
 
     return S_OK;
 }
@@ -42,6 +33,7 @@ float testCoolDown = 1.0f;
 void cGame::Update()
 {
     WinFroc::Update();
+    SceneManager::getSingleton()->Update();
     GameObjectManager::getSingleton()->updateObj();
 
     /*testCoolDown -= TimeManager::getSingleton()->getElapsedTime();
@@ -60,7 +52,9 @@ void cGame::Render()
 {
     PatBlt(getMemDC(), 0, 0, WINSIZEX, WINSIZEY, WHITENESS);
 
-    for (int i = 0; i < BOARD_ROW; ++i)
+
+    SceneManager::getSingleton()->Render(getMemDC());
+    /*for (int i = 0; i < BOARD_ROW; ++i)
     {
         for (int j = 0; j < BOARD_COL; ++j)
         {
@@ -74,7 +68,7 @@ void cGame::Render()
     //ImageManager::getSingleton()->Render("OVER", getMemDC(), 200, 200);
     GameObjectManager::getSingleton()->renderObj(getMemDC());
     TimeManager::getSingleton()->Render(getMemDC());
-    GameObjectManager::getSingleton()->debug(getMemDC());
+    GameObjectManager::getSingleton()->debug(getMemDC());*/
 
     this->getBackBuffer()->Render(getHDC());
 }

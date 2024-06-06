@@ -17,6 +17,7 @@ Bomb::Bomb(Player* player, POINT_FLOAT center, int power)
 , _POP_TIME(3.f)
 , _DISAPPEAR_TIME(0.5f)
 , _bombOwner(player)
+, _isNewBomb(true)
 {
 	setAnimationInfo("bomb1", _BOMB_COOLTIME);
 	

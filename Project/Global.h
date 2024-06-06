@@ -157,7 +157,8 @@ enum class WaveControllerStateTag
 enum class BombOnTyleTag
 {
     Not,
-    PlayerOnBomb
+    PlayerOnBomb,
+    NormalBomb
 };
 
 enum class ItemTypeTag
@@ -167,6 +168,30 @@ enum class ItemTypeTag
     Potion,
     PotionMax,
     Skate
+};
+
+enum class SceneTag
+{
+    MainThemeScene,
+    PlayScene
+};
+
+enum class SoundTypeTag
+{
+    MainScene,
+    PlayScene,
+    Click,
+    PtInRect,
+    GameStart,
+    EatItem,
+    Wave,
+    Win,
+    Lose,
+    Logo,
+    BombPop,
+    BombSet,
+    GameOver,
+    PlayerDie
 };
 
 struct Text

@@ -15,6 +15,7 @@ private:
 	BombStateTag _currentState;
 
 	float _startTime;
+	bool _isNewBomb;
 
 	const int _SIZE;
 	const int _POWER;
@@ -33,5 +34,12 @@ public:
 	virtual void Release() override;
 	virtual void onCollisionEnter(GameObject* other, RECT area);
 
-
+	float getStartX() { return _start.x; }
+	float getStartY() { return _start.y; }
+	float getCenterX() { return _center.x; }
+	float getCenterY() { return _center.y; }
+	bool getIsNewBomb() { return _isNewBomb; }
+	void setIsNewBomb(bool isNew) { _isNewBomb = isNew; }
+	int getSize() { return _SIZE; }
+	Player* getBombOwner(){ return _bombOwner; }
 };

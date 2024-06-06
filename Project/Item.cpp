@@ -8,7 +8,7 @@ Item::Item(MapSpace mapSpace, ItemTypeTag itemType)
 	, _itemType(itemType)
 	, _SIZE(BOARD_RECTSIZE)
 	, _ANIMATION_COOLTIME(1.f)
-	, _isNewCoolDown(0.5f)
+	, _isNewCoolDown(0.2f)
 {
 	POINT_FLOAT pt;
 	pt = mapSpaceToLeftTop(_mapSpace.row, _mapSpace.col);

@@ -4,6 +4,7 @@
 #include "ImageManager.h"
 #include "KeyManager.h"
 #include "gameObjectManager.h"
+#include "SoundManager.h"
 
 #include "Bomb.h"
 #include "Item.h"
@@ -149,11 +150,14 @@ void Player::Update()
 			//GAMESTATEMANAGER->setGameOver(true);
 			if (_currentState != _previousState)
 			{
-				//SOUNDMANAGER->play(static_cast<int>(SoundTypeTag::PlayerDie), SoundTypeTag::PlayerDie);
-				//SOUNDMANAGER->play(static_cast<int>(SoundTypeTag::GameOver), SoundTypeTag::GameOver);
+				SoundManager::getSingleton()->play(static_cast<int>(SoundTypeTag::PlayerDie), SoundTypeTag::PlayerDie);
+				SoundManager::getSingleton()->play(static_cast<int>(SoundTypeTag::GameOver), SoundTypeTag::GameOver);
 				setAnimationInfo("playerBazziDie", _DIE_COOLTIME);
 				_previousState = _currentState;
-				
+
+				SoundManager::getSingleton()->stop(static_cast<int>(SoundTypeTag::PlayScene));
+				SoundManager::getSingleton()->play(static_cast<int>(SoundTypeTag::Lose), SoundTypeTag::Lose);
+				//ImageManager::getSingleton()->findImage("GAME_GRAY")->Render();
 			}
 			int maxFrame = ImageManager::getSingleton()->findImage(getStrKey())->getMaxFrameX();
 			animation(maxFrame);
@@ -177,7 +181,7 @@ void Player::Update()
 		{
 			if (_currentState != _previousState)
 			{
-				//SOUNDMANAGER->play(static_cast<int>(SoundTypeTag::BombPop), SoundTypeTag::BombPop);
+				SoundManager::getSingleton()->play(static_cast<int>(SoundTypeTag::BombPop), SoundTypeTag::BombPop);
 				setAnimationInfo("playerBazziLive", 0.3f);
 				_previousState = _currentState;
 				_speed = _prevSpeed;
@@ -234,7 +238,7 @@ void Player::Update()
 					if (!_check)
 					{
 						_check = true;
-						//SOUNDMANAGER->play(static_cast<int>(SoundTypeTag::BombSet), SoundTypeTag::BombSet);
+						SoundManager::getSingleton()->play(static_cast<int>(SoundTypeTag::BombSet), SoundTypeTag::BombSet);
 					}
 				}
 
@@ -314,17 +318,14 @@ void Player::Update()
 						_start.x += _speed;
 					}
 				}
-				else // 키 입력이 없는 경우
+				else 
 				{
 					if (_currentState == PlayerStateTag::Left || _currentState == PlayerStateTag::Right ||
 						_currentState == PlayerStateTag::Up || _currentState == PlayerStateTag::Down)
 					{
-						//캐릭터는 항상 0이나 4프레임으로 끝나야함
 						int frameX = ImageManager::getSingleton()->findImage(getStrKey())->getFrameX();
 						if ((frameX != 0) ||( frameX != 4))
 							setFrame(0);
-
-						//키입력이 없고, 일정시간이 지나면 정면을 바라본다
 						int currentTime = static_cast<int>(TimeManager::getSingleton()->getWorldTime());
 						if (currentTime - _startTime > 3)
 						{
@@ -334,10 +335,9 @@ void Player::Update()
 						}
 
 					}
-				}//키 입력이 없는 경우
-			}//게임오버상태가 아닌경우 끝
-		} //레디도 트랩도 죽은상태도 아닌경우
-
+				}
+			}
+		} 
 
 		setCenter();
 		setCollisionStart();
@@ -383,7 +383,7 @@ void Player::onCollisionEnter(GameObject* other, RECT area)
 	break;
 	case GameObjectTag::Item:
 	{
-		//SOUNDMANAGER->play(static_cast<int>(SoundTypeTag::EatItem), SoundTypeTag::EatItem);
+		SoundManager::getSingleton()->play(static_cast<int>(SoundTypeTag::EatItem), SoundTypeTag::EatItem);
 		Item* item = dynamic_cast<Item*>(other);
 
 		switch (item->getItemType())
@@ -405,6 +405,9 @@ void Player::onCollisionEnter(GameObject* other, RECT area)
 	}
 	break;
 	case GameObjectTag::Block:
+		_start = _previousStart;
+		break;
+	case GameObjectTag::Bomb:
 		_start = _previousStart;
 		break;
 	}

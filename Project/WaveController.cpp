@@ -1,6 +1,7 @@
 #include "WaveController.h"
 #include "TimeManager.h"
 #include "gameObjectManager.h"
+#include "SoundManager.h"
 #include "Block.h"
 
 WaveController::WaveController(MapSpace mapSpace, int power)
@@ -24,6 +25,8 @@ WaveController::~WaveController()
 
 void WaveController::Init()
 {
+	SoundManager::getSingleton()->play(static_cast<int>(SoundTypeTag::BombPop), SoundTypeTag::BombPop);
+	SoundManager::getSingleton()->play(static_cast<int>(SoundTypeTag::Wave), SoundTypeTag::Wave);
 }
 
 void WaveController::Update()
