@@ -28,7 +28,7 @@ void MainScene::Update()
 
 	//if (PtInRect(&_rect, ptMouse))
 	//{
-		if (KeyManager::getSingleton()->isOnceKeyDown(VK_LBUTTON))
+		if (KeyManager::getSingleton()->isOnceKeyDown(VK_RBUTTON))
 		{
 			SceneManager::getSingleton()->changeScene(SceneTag::PlayScene);
 

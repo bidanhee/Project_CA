@@ -1,5 +1,6 @@
 #include "playScene.h"
 BombOnTyleTag PlayScene::bombArr[BOARD_ROW][BOARD_COL] = {};
+bool PlayScene::_isGameOver = false;
 
 #include "gameObjectManager.h"
 #include "Player.h"
@@ -59,6 +60,13 @@ void PlayScene::Render(HDC hdc)
     GameObjectManager::getSingleton()->renderObj(hdc);
     TimeManager::getSingleton()->Render(hdc);
     GameObjectManager::getSingleton()->debug(hdc);
+
+    if (_isGameOver == true)
+    {
+        ImageManager::getSingleton()->findImage("GAME_GRAY")->Render(hdc, 100, 200);
+        ImageManager::getSingleton()->findImage("OVER")->Render(hdc, 350, 300);
+    }
+
 }
 
 void PlayScene::handleArgs(vector<int> args)

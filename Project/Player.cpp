@@ -155,9 +155,10 @@ void Player::Update()
 				setAnimationInfo("playerBazziDie", _DIE_COOLTIME);
 				_previousState = _currentState;
 
+				PlayScene::setIsGameOver(true);
+
 				SoundManager::getSingleton()->stop(static_cast<int>(SoundTypeTag::PlayScene));
 				SoundManager::getSingleton()->play(static_cast<int>(SoundTypeTag::Lose), SoundTypeTag::Lose);
-				//ImageManager::getSingleton()->findImage("GAME_GRAY")->Render();
 			}
 			int maxFrame = ImageManager::getSingleton()->findImage(getStrKey())->getMaxFrameX();
 			animation(maxFrame);
